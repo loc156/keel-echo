@@ -1,0 +1,39 @@
+// 计数器：KeelUI 的最小脚本（表面语法）。
+//
+// 约定（见 keelui/README.md）：
+//   文件顶层是"序章"，只在装载后跑一次 —— 只放 fn 定义和变量初始化
+//   startup 跑一次，frame 每帧跑一次
+//   ui.* 是立即模式指令：每帧从头调用一遍
+//
+// 表面语法 v1 的三条规则（否则运行时报 "undefined variable"）：
+//   1. 语句开头的裸名字会被当成"变量读取"。指令要么写成调用形式 name(...)，
+//      要么把操作数写在前面（"hi" ui.text）。
+//   2. if / while 的条件必须是单个表达式，不能是一串指令：
+//      先 let 出来再判断。
+//   3. fn 不带形参。
+
+let n = 0
+let label = "加 1"
+
+fn startup {
+    n = 0
+    label = "加 1"
+}
+
+fn frame {
+    ui.begin("计数器", 320, 200)
+    ui.text("点下面的按钮，数字会加一。")
+
+    let clicked = ui.button(label)
+    if clicked {
+        n = n + 1
+        label = "再点 (" str(n) ")"
+    }
+
+    ui.separator()
+
+    // 嵌套调用形式最稳（postfix 与调用形式可以混，但"调用后接裸指令"会被当成变量）
+    ui.text(concat("n = ", str(n)))
+    ui.textDim("脚本每帧从头跑一遍，变量 n 跨帧保留。")
+    ui.end()
+}
