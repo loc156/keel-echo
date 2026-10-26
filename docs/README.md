@@ -11,7 +11,8 @@
 | 知道哪些没做、哪些没验证 | [ROADMAP.md](ROADMAP.md) | 所有人 |
 | 用 Echo 做第一个界面 | [../echo/docs/GETTING-STARTED.md](../echo/docs/GETTING-STARTED.md) | 使用者 |
 | 查 Echo 的某个控件/函数签名 | [../echo/docs/API.md](../echo/docs/API.md) | 使用者 |
-| 学 Keel 的语法 | [../keel/docs/LANGUAGE.md](../keel/docs/LANGUAGE.md) | 使用者 |
+| 了解 Keel 的语言模型与定位 | [../keel/docs/LANGUAGE.md](../keel/docs/LANGUAGE.md) | 使用者 |
+| 知道 Keel 为什么"默认不信任" | [../keel/docs/SURFACE.md](../keel/docs/SURFACE.md) 第 6 节 | 使用者 |
 | 查 Keel 有哪些指令、栈效果是什么 | [../keel/docs/REFERENCE.md](../keel/docs/REFERENCE.md) | 使用者 |
 | 在 C++ 里装载并运行 Keel 脚本 | [../keel/docs/LOADER.md](../keel/docs/LOADER.md) | 宿主开发者 |
 | 给脚本加自己的指令、接输出、单步调试 | [../keel/docs/EMBEDDING.md](../keel/docs/EMBEDDING.md) | 宿主开发者 |
