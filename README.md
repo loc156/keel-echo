@@ -8,6 +8,22 @@
 > **Echo** wraps Dear ImGui in an object-style immediate-mode API.
 > **KeelUI** lets a Keel script drive an Echo-hosted window through `ui.*` commands.
 
+## Keel的定位
+特别的一点，Keel 不单纯是一个给人用的脚本语言， 更是一个**默认不信任脚本、错误可聚合成一段可直接回灌给外部的嵌入式栈式脚本引擎**。
+
+- **默认不信任**是结构性的，不只是限额：引擎只执行宿主注册过的指令，脚本递不进原生代码；
+  没有闭包和宿主回调，状态只有一条数据栈；再叠上默认限额（20 万步 / 深度 200 / 栈 1 万）、
+  硬天花板、文件 IO 沙箱、可关的 `include`、装载期的字节数 / token 数上限。
+- **错误可聚合**：错误按位置收集，同一处同一描述压成 `(xN)`，上限 100 条，`(块, ip)` 能翻回
+  `文件:行`。引擎不负责回灌，但回灌需要的那段文本是它直接给出的（代码里就叫
+  `format_errors_for_ai`）。
+- **块表不归宿主管**：`{` 在运行时从栈顶取块名，名字可以是算出来的；装载器只做非权威的结构扫描
+  （给诊断和行号用），从不定义块。
+
+如果使用者是模型 / agent：生成一段脚本、在受限环境里跑、把结构化错误喂回去再改。
+如果使用者是人，优先考虑表面语法那层（`let` / `if` / `while` / `fn`）。
+Echo 和 KeelUI 不受这个定位影响：Echo 是普通的 C++ UI 库。
+
 ## 三个部分
 
 | 目录 | 是什么 | 语言 | 依赖 |
@@ -74,7 +90,8 @@ int main() {
 | 把代码编起来 / 排查编译错误 | [`docs/BUILD.md`](docs/BUILD.md) |
 | 用 Echo 做第一个界面 | [`echo/docs/GETTING-STARTED.md`](echo/docs/GETTING-STARTED.md) |
 | 查 Echo 的控件和函数签名 | [`echo/docs/API.md`](echo/docs/API.md) |
-| 学 Keel 的语法 | [`keel/docs/LANGUAGE.md`](keel/docs/LANGUAGE.md) |
+| 了解 Keel 的语言模型（先读这篇） | [`keel/docs/LANGUAGE.md`](keel/docs/LANGUAGE.md) |
+| 知道 Keel 为什么"默认不信任" | [`keel/docs/SURFACE.md`](keel/docs/SURFACE.md) 第 6 节、[`docs/ROADMAP.md`](docs/ROADMAP.md) 设计取舍 |
 | 查 Keel 有哪些指令 | [`keel/docs/REFERENCE.md`](keel/docs/REFERENCE.md) |
 | 把 Keel 装进自己的程序 | [`keel/docs/LOADER.md`](keel/docs/LOADER.md)、[`EMBEDDING.md`](keel/docs/EMBEDDING.md) |
 | 写 `let/if/while/fn`（表面语法） | [`keel/docs/SURFACE.md`](keel/docs/SURFACE.md) |
